@@ -105,19 +105,31 @@ There are cases where a users credentials will expire. It's probably easiest to 
 
 The SuperOffice WebApi library has limited built-in support to automatically refresh credentials.
 	
-Both `AuthorizationTicket` and `AuthorizationSystemUserTicket` credentials expire after 6 hours, but only the `AuthorizationSystemUserTicket` implementation has automatic refresh support. 
+Both `AuthorizationTicket` and `AuthorizationSystemUserTicket` credentials expire after 6 hours but only the `AuthorizationSystemUserTicket` implementation has automatic refresh support.
 
-`AuthorizationSystemUserTicket` needs a SystemUser Token and knowledge of which environment.
-	
-The AuthorizationAccessToken implementation also has built-in support to automatically refresh itself. This implementation require the following information:
+To auto-refresh `AuthorizationSystemUserTicket` requires the following information:
 
-1) Access Token
-2) Refresh Token
-3) Redirect URI
+* Environment
+* ContextIdentifier
+* ClientSecret
+* PrivateKey
+* SystemUserToken
+
+To auto-refresh `AuthorizationAccessToken` requires the following information:
+
+* Access Token
+* Refresh Token
+* Redirect URI
+
+The system user flow is discussed more in the System User section below.
 	
 ### When is IAuthorization refreshed
 
-The library takes the reactive approach and waits for an access denied response. When an access denied response is received, the client looks to make sure the WebApiConfiguration has an `IAuthorization.RefreshAuthorization` implementation. When present, and the RefreshAuthorization implementation succeeds, `RefreshAuthorization` returns an updated IAuthorization. The client then invokes the `IAuthorization.GetAuthorization` method and uses the two-value tuple, the scheme and the parameter, to set the Authorization header.
+This library takes a reactive approach and waits to receive an access denied response prior to attempting to refresh the Authorization.
+
+When an access denied response is received, the client looks to make sure the WebApiConfiguration has an `IAuthorization.RefreshAuthorization` implementation. When present, and the RefreshAuthorization implementation succeeds, `RefreshAuthorization` returns an updated `IAuthorization`.
+
+With an updated Authorization, the client then invokes the `IAuthorization.GetAuthorization` method to get a two-value tuple, the scheme and the parameter, and uses those to set the Authorization header.
 
 `("Bearer", "8A:Cust12345:ABCdefg....XyZ")`
 
@@ -153,6 +165,8 @@ The client updates the `WebApiConfiguration` and then calls the **GetAuthorizati
 This library supports the System User flow. The client makes it very easy to call the online PartnerSystemUserService endpoint, validate the JWT and return the claims it contains.
 
 The JWT contains a lot of information, however, it's usually just the Ticket credential that is interesting. Therefore, **SuperOffice.WebApi** simplifies calling the service, validating the response, and then returning the ticket in a single method call.
+
+> :warning: Do not ask for a System User Ticket every single time you invoke an Agent method! This creates a new credentials record in the database each and every time. Take advantage of the 6 hour window and only ask for a new Ticket when absolutely necessary!
 
 ### How to use System User flow
 
