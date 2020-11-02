@@ -10,7 +10,7 @@ Please understand that this preview is still very young and untested in the wild
 
 Feedback can either go to sdk@superoffice.com, subject: SuperOffice.WebApi Preview, or even better, [create an issue](https://github.com/SuperOffice/SuperOffice.WebApi-Samples/issues/new) on this repo!
 
-## About this samples
+## About the samples
 
 The samples use a pre-registered application called **SuperOffice DevNet WebApi Sample**. It is already registered and has the following details:
 
@@ -166,7 +166,7 @@ This library supports the System User flow. The client makes it very easy to cal
 
 The JWT contains a lot of information, however, it's usually just the Ticket credential that is interesting. Therefore, **SuperOffice.WebApi** simplifies calling the service, validating the response, and then returning the ticket in a single method call.
 
-> :warning: Do not ask for a System User Ticket every single time you invoke an Agent method! This creates a new credentials record in the database each and every time. Take advantage of the 6 hour window and only ask for a new Ticket when absolutely necessary!
+> :warning: Do **not** ask for a System User Ticket every single time you invoke an Agent method! This creates a new credentials record in the database each and every time. **Take advantage of the 6 hour window** and only ask for a new Ticket when absolutely necessary!
 
 ### How to use System User flow
 
