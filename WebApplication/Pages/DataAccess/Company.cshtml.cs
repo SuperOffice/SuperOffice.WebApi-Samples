@@ -36,8 +36,8 @@ namespace WebApplication.Pages.DataAccess
                 if (authenticationInfo != null)
                 {
                     var webApiUrl = authenticationInfo.Principal.Claims.Where(c => c.Type.Contains("webapi", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-                    var callbackUri = $"{this.Request.Scheme}://{this.Request.Host}{_superOfficeOptions.CurrentValue.CallbackPath}";
                     var clientSettings = _superOfficeOptions.Get(SuperOfficeAuthenticationDefaults.AuthenticationScheme);
+                    var callbackUri = $"{this.Request.Scheme}://{this.Request.Host}{clientSettings.CallbackPath}";
 
                     var authorization = new AuthorizationAccessToken(
                     authenticationInfo.Properties.GetTokenValue(Constants.OAuth.AccessToken),
@@ -70,18 +70,6 @@ namespace WebApplication.Pages.DataAccess
                 default:
                     throw new Exception("Should not get here...");
             };
-        }
-
-        public async Task<IActionResult> GetContact(int contactId)
-        {
-            var authenticationInfo = HttpContext.AuthenticateAsync().Result;
-            var webApiUrl = authenticationInfo.Principal.Claims.Where(c => c.Type.Contains("webapi", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
-            var config = new WebApiConfiguration(webApiUrl.Value);
-
-            ContactAgent ca = new ContactAgent(config);
-            ContactEntity = await ca.GetContactEntityAsync(contactId);
-
-            return Page();
         }
     }
 }
