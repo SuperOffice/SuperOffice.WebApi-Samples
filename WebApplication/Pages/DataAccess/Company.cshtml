@@ -1,0 +1,57 @@
+﻿@page
+@model WebApplication.Pages.DataAccess.CompanyModel
+@{
+    ViewData["Title"] = "Search for company";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+
+    <form class="form-horizontal">
+        <div>
+            <label>Get Company By ID:</label>
+            Title: <input type="number" asp-for="SearchId" />
+            <input type="submit" value="Search" />
+        </div>
+    </form>
+    @{
+        if (Model.ContactEntity != null)
+        {
+            <div>
+                <h4>Company Information:</h4>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.ContactEntity.Name)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.ContactEntity.Name)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.ContactEntity.Department)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.ContactEntity.Department)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.ContactEntity.Business)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.ContactEntity.Business.Value)
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.ContactEntity.Category)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @Html.DisplayFor(model => model.ContactEntity.Category.Value)
+                    </dd>
+                </dl>
+            </div>
+        }
+        else
+        {
+            <div>No company to display.</div>
+        }
+    }
+</div>

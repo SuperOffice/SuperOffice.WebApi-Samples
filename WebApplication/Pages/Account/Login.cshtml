@@ -1,0 +1,12 @@
+﻿@page
+@model WebApplication.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-2">
+        @await Html.PartialAsync("./_ExternalLoginPartial", Model.ExternalLogins)
+    </div>
+</div>
