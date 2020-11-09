@@ -4,7 +4,7 @@ The SuperOffice.WebApi nuget package is ready for preview.
 
 https://www.nuget.org/packages/SuperOffice.WebApi
 
-`Install-Package SuperOffice.WebApi -Version 1.0.0-preview`
+`Install-Package SuperOffice.WebApi -Version 1.0.0-preview2`
 
 Please understand that this preview is still very young and untested in the wild. That's why we are sharing it with you! :-) Please take the time to give it a good test drive and provide your feedback.
 
