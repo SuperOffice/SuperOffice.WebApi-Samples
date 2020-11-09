@@ -35,6 +35,8 @@ namespace WebApplication.Pages.DataAccess
                 var authenticationInfo = HttpContext.AuthenticateAsync()?.Result;
                 if (authenticationInfo != null)
                 {
+                    // could use "User.Claims", but still need AuthInfo to access Tokens...
+                    
                     var webApiUrl = authenticationInfo.Principal.Claims.Where(c => c.Type.Contains("webapi", StringComparison.InvariantCultureIgnoreCase)).FirstOrDefault();
                     var clientSettings = _superOfficeOptions.Get(SuperOfficeAuthenticationDefaults.AuthenticationScheme);
                     var callbackUri = $"{this.Request.Scheme}://{this.Request.Host}{clientSettings.CallbackPath}";

@@ -78,9 +78,17 @@ OK. So that's what the SuperOffice.WebApi library is, now lets see how to use it
 	|AuthorizationSystemUserTicket|X               |                |
 	|AuthorizationTicket          |                | X              |
 	|AuthorizationUsernamePassword|                | X              |
+    |AuthorizationUserToken       |                | X              |
 
 	Assign an instance to the `WebApiConfiguration.Authorization` property.
     
+	```C#
+    var auth = new AuthorizationUsernamePassword("jack@black.com", "TenaciousD!");
+    var config = new WebApiConfiguration(tenant.WebApiUrl, auth);
+    ```
+
+    or
+
 	```C#
     var config = new WebApiConfiguration(tenant.WebApiUrl);
 	config.Authorization = 
@@ -120,6 +128,11 @@ To auto-refresh `AuthorizationAccessToken` requires the following information:
 * Access Token
 * Refresh Token
 * Redirect URI
+
+To auto-refresh `AuthorizationUserToken` requires the following information:
+
+* Username
+* Password
 
 The system user flow is discussed more in the System User section below.
 	
