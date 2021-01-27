@@ -23,7 +23,7 @@ The samples use a pre-registered application called **SuperOffice DevNet WebApi 
 |ClientSecret        |ca452f9c29870bc278017796cd16bd11                         |
 |PrivateKey          |See the code sample Program.cs, line 206.                |
 
-To get a **system user token** and **access token**, sign-in using the [DevNet-Tokens](https://devnet-tokens.azurewebsites.net/account/signin) application using the provided client ID and secret in the table above. When redirected back the web site, your System User Token is displayed on the page.
+To get a **system user token** and **access token**, sign-in using theï¿½[DevNet-Tokens](https://devnet-tokens.azurewebsites.net/account/signin)ï¿½application using the provided client ID and secret in the table above. When redirected back the web site, your System User Token is displayed on the page.
 
 Copy and paste both the System User token and Access Token from the page into each of the sample program.cs files to successfully run the code.
 
@@ -41,7 +41,7 @@ This library is a .NET Standard 2.0 library that works with both .NET Framework 
 
 Its purpose is to provide an alternative to the existing SuperOffice NetServer WCF proxies. **SuperOffice.WebApi** provides the exact same Agent-style services as [SuperOffice.NetServer.Services](https://www.nuget.org/packages/SuperOffice.NetServer.Services), while adopting modern practices, such as asynchronous methods. 
 
-This library makes it easier to work in a multi-tenant environment. It isolates a tenants' context in a **WebApiConfiguration** instance, where each instance is configured to target one specific tenant. Each instance can be configured with its own language, culture and timezone settings.
+This library makes it easier to work in a multi-tenant environment. It isolates a tenants' context in a **WebApiOptions** instance, where each instance is configured to target one specific tenant. Each instance can be configured with its own language, culture and timezone settings.
 
 This library also has built-in **system user token** support. More on that below.
 
@@ -49,7 +49,7 @@ OK. So that's what the SuperOffice.WebApi library is, now lets see how to use it
 
 ## How to use SuperOffice.WebApi
 
-1) Instantiate a WebApiConfiguration instance.
+1) Instantiate a WebApiOptions instance.
   * The primary constructor accepts the target web api URL, i.e. https://sod.superoffice.com/cust12345/api.
 	
 	`WebApiOptions(string baseUrl);`
@@ -115,7 +115,7 @@ The SuperOffice WebApi library has limited built-in support to automatically ref
 	
 Both `AuthorizationTicket` and `AuthorizationSystemUserTicket` credentials expire after 6 hours but only the `AuthorizationSystemUserTicket` implementation has automatic refresh support.
 
-To auto-refresh `AuthorizationSystemUserTicket` requires the following information:
+To auto-refresh `AuthorizationSystemUserTicket`ï¿½requires the following information:
 
 * Environment
 * ContextIdentifier
@@ -123,13 +123,13 @@ To auto-refresh `AuthorizationSystemUserTicket` requires the following informati
 * PrivateKey
 * SystemUserToken
 
-To auto-refresh `AuthorizationAccessToken` requires the following information:
+To auto-refresh `AuthorizationAccessToken`ï¿½requires the following information:
 
 * Access Token
 * Refresh Token
 * Redirect URI
 
-To auto-refresh `AuthorizationUserToken` requires the following information:
+To auto-refresh `AuthorizationUserToken`ï¿½requires the following information:
 
 * Username
 * Password
@@ -140,7 +140,7 @@ The system user flow is discussed more in the System User section below.
 
 This library takes a reactive approach and waits to receive an access denied response prior to attempting to refresh the Authorization.
 
-When an access denied response is received, the client looks to make sure the WebApiConfiguration has an `IAuthorization.RefreshAuthorization` implementation. When present, and the RefreshAuthorization implementation succeeds, `RefreshAuthorization` returns an updated `IAuthorization`.
+When an access denied response is received, the client looks to make sure the WebApiOptions has an `IAuthorization.RefreshAuthorization` implementation. When present, and the RefreshAuthorization implementation succeeds, `RefreshAuthorization` returns an updated `IAuthorization`.
 
 With an updated Authorization, the client then invokes the `IAuthorization.GetAuthorization` method to get a two-value tuple, the scheme and the parameter, and uses those to set the Authorization header.
 
@@ -171,7 +171,7 @@ public interface IAuthorization
 
 RefreshAuthorization is a function that accepts a `ReAuthorizationArgs` and returns an `IAuthorization` instance with updated credential values.
 
-The client updates the `WebApiConfiguration` and then calls the **GetAuthorization** method. `GetAuthorization` returns the scheme and parameter, which the client then uses to populate the request Authorization header.
+The client updates the `WebApiOptions` and then calls the **GetAuthorization** method. `GetAuthorization` returns the scheme and parameter, which the client then uses to populate the request Authorization header.
 
 ## System User
 
