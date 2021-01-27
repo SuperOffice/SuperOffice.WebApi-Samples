@@ -51,7 +51,7 @@ namespace WebApplication.Pages.DataAccess
                     GetEnvironment(clientSettings.Environment)
                     );
 
-                    var config = new WebApiConfiguration(webApiUrl.Value, authorization);
+                    var config = new WebApiOptions(webApiUrl.Value, authorization);
 
                     ContactAgent ca = new ContactAgent(config);
                     ContactEntity = await ca.GetContactEntityAsync(SearchId);

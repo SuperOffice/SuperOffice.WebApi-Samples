@@ -4,7 +4,7 @@ The SuperOffice.WebApi nuget package is ready for preview.
 
 https://www.nuget.org/packages/SuperOffice.WebApi
 
-`Install-Package SuperOffice.WebApi -Version 1.0.0-preview2`
+`Install-Package SuperOffice.WebApi -Version 1.0.0-preview3`
 
 Please understand that this preview is still very young and untested in the wild. That's why we are sharing it with you! :-) Please take the time to give it a good test drive and provide your feedback.
 
@@ -52,12 +52,12 @@ OK. So that's what the SuperOffice.WebApi library is, now lets see how to use it
 1) Instantiate a WebApiConfiguration instance.
   * The primary constructor accepts the target web api URL, i.e. https://sod.superoffice.com/cust12345/api.
 	
-	`WebApiConfiguration(string baseUrl);`
+	`WebApiOptions(string baseUrl);`
 			
-	WebApiConfiguration inherits from RequestOptions, which contain the internationalization settings. 	These settings can also be passes into the overloaded contructor.
+	WebApiOptions inherits from RequestOptions, which contain the internationalization settings. 	These settings can also be passes into the overloaded contructor.
 	
     ```C#
-	WebApiConfiguration(
+	WebApiOptions(
 		string baseUrl, 
 		IAuthorization authorization, 
 		string languageCode = null, 
@@ -80,22 +80,22 @@ OK. So that's what the SuperOffice.WebApi library is, now lets see how to use it
 	|AuthorizationUsernamePassword|                | X              |
     |AuthorizationUserToken       |                | X              |
 
-	Assign an instance to the `WebApiConfiguration.Authorization` property.
+	Assign an instance to the `WebApiOptions.Authorization` property.
     
 	```C#
     var auth = new AuthorizationUsernamePassword("jack@black.com", "TenaciousD!");
-    var config = new WebApiConfiguration(tenant.WebApiUrl, auth);
+    var config = new WebApiOptions(tenant.WebApiUrl, auth);
     ```
 
     or
 
 	```C#
-    var config = new WebApiConfiguration(tenant.WebApiUrl);
+    var config = new WebApiOptions(tenant.WebApiUrl);
 	config.Authorization = 
 		new AuthorizationUsernamePassword("jack@black.com", "TenaciousD!");
     ```
 
-3) Create the desired Agent class, passing in the WebApiConfiguration as a constructor parameter. This is the only Agent difference when compared to using the existing WCF proxies.
+3) Create the desired Agent class, passing in the WebApiOptions as a constructor parameter. This is the only Agent difference when compared to using the existing WCF proxies.
 
 	```C#
 	var contactAgent = new ContactAgent(config);
@@ -205,7 +205,17 @@ var sysUserJwt = sysUserClient.GetSystemUserJwt();
 var sysUserTkt = sysUserClient.GetSystemUserTicket();
 ```
 
-The **GetSystemUserJWT**, only returns the JWT, wrapped in a `SystemUserResult`. It does not validate or extract any claims. To perform validation and extract claims, the `SystemUserClient` uses the `JwtTokenHandler`, located in the `SuperOffice.WebApi.IdentityModel` namespace.
+The **GetSystemUserJwt**, only returns the JWT, wrapped in a `SystemUserResult`. It does not validate or extract any claims. 
+
+There are two ways to perform validation. 
+
+1. Use the ValidateSystemUserResultMethod, and get back a `TokenValidationResult`. This method is responsible for populating SystemUserClient.ClaimsIdentity property. This method is used by the `GetSystemUserTicket` method.
+
+```C#
+	var tokenValidationResult = sysUserClient.ValidateSystemUserResult(systemUserResult);
+```
+
+2. Manually perform validation and extract claims, the `SystemUserClient` uses the `JwtTokenHandler`, located in the `SuperOffice.WebApi.IdentityModel` namespace.
 
 ```C#
 var handler = new JwtTokenHandler(
@@ -225,6 +235,7 @@ These will automatically be included when you add the SuperOffice.WebApi package
 
 .NETStandard 2.0
 
+* Microsoft.Extensions.Logging.Abstractions (>= 5.0.0)
 * Microsoft.IdentityModel.JsonWebTokens (>= 5.6.0)
 * Microsoft.IdentityModel.Logging (>= 5.6.0)
 * Microsoft.IdentityModel.Tokens (>= 5.6.0)
@@ -234,6 +245,4 @@ These will automatically be included when you add the SuperOffice.WebApi package
 ## Known Issues
 
 The current SuperOffice.WebApi package dependencies are not the latest Microsoft packages available. Therefore, if your project uses newer versions of the Microsoft packages, there will be conflicts with TokenValidationResult.
-
-The current library does not have any logging, and very little exception handling.
 

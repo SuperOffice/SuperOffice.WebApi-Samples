@@ -86,7 +86,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
                 var sysUserInfo = GetSystemUserInfo();
                 var sysUserTicket = GetSystemUserTicket(sysUserInfo);
 
-                var config = new WebApiConfiguration(tenant.WebApiUrl);
+                var config = new WebApiOptions(tenant.WebApiUrl);
                 config.Authorization = new AuthorizationSystemUserTicket(sysUserInfo, sysUserTicket);
 
                 //config.LanguageCode = "en";
@@ -108,7 +108,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
             var tenantStatus = GetTenantStatus(tenant);
             if (tenantStatus.IsRunning)
             {
-                var config = new WebApiConfiguration(tenant.WebApiUrl);
+                var config = new WebApiOptions(tenant.WebApiUrl);
                 config.Authorization = GetAccessTokenAuthorization();
 
 
@@ -121,7 +121,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
 
         private async Task<StringDictionary> GetSystemInfo(Tenant tenant)
         {
-            WebApiConfiguration session = new WebApiConfiguration(tenant.WebApiUrl);
+            WebApiOptions session = new WebApiOptions(tenant.WebApiUrl);
 
             // no authorization necessary for getting system info...
 
@@ -131,7 +131,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
 
         private TenantStatus GetTenantStatus(Tenant tenant)
         {
-            WebApiConfiguration session = new WebApiConfiguration(tenant.WebApiUrl);
+            WebApiOptions session = new WebApiOptions(tenant.WebApiUrl);
 
             // no authorization necessary for getting tenant status...
 
