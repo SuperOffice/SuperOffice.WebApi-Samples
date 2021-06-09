@@ -218,8 +218,7 @@ There are two ways to perform validation.
 2. Manually perform validation and extract claims, the `SystemUserClient` uses the `JwtTokenHandler`, located in the `SuperOffice.WebApi.IdentityModel` namespace.
 
 ```C#
-var handler = new JwtTokenHandler(
-    "YOUR_CLIENT_ID",                 // Application ID, A.K.A. client_id
+var handler = new SystemUserTokenHandler(
     new System.Net.Http.HttpClient(), // HttpClient instance.
     OnlineEnvironment.SOD             // target online environment (SOD, Stage or Production)
     );
@@ -227,7 +226,7 @@ var handler = new JwtTokenHandler(
 var tokenValidationResult = handler.ValidateAsync(sysUserJwt.Token);
 ```
 
-The method `JwtTokenHandler.ValidateAsync` returns a TokenValidationResult, a Microsoft datatype located in the [Microsoft.IdentityModel.JsonWebTokens](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.tokens.tokenvalidationresult) namespace, in the `Microsoft.IdentityModel.JsonWebTokens` assembly. 
+The method `SystemUserTokenHandler.ValidateAsync` returns a TokenValidationResult, a Microsoft datatype located in the [Microsoft.IdentityModel.JsonWebTokens](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.tokens.tokenvalidationresult) namespace, in the `Microsoft.IdentityModel.JsonWebTokens` assembly. 
 
 ## Package Dependencies
 
