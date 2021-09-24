@@ -80,14 +80,14 @@ namespace SuperOffice.WebApi.FullFrameworkSample
 
         private async Task<ContactEntity> GetContactEntityAsync(int contactId, Tenant tenant)
         {
-            // maybe the tenant cancelled their subscription...
-            // make sure the tenant is running (not offline or in backup or maintenance mode)
+            // maybe the tenant canceled their subscription...
+            // make sure the tenant is running (not off-line or in backup or maintenance mode)
 
             var tenantStatus = GetTenantStatus(tenant);
             if (tenantStatus.IsRunning)
             {
                 var sysUserInfo = GetSystemUserInfo();
-                var sysUserTicket = GetSystemUserTicket(sysUserInfo);
+                var sysUserTicket = await GetSystemUserTicket(sysUserInfo);
 
                 var config = new WebApiOptions(tenant.WebApiUrl);
                 config.Authorization = new AuthorizationSystemUserTicket(sysUserInfo, sysUserTicket);
@@ -105,8 +105,8 @@ namespace SuperOffice.WebApi.FullFrameworkSample
 
         private async Task<PersonEntity> GetPersonEntityAsync(int personId, Tenant tenant)
         {
-            // maybe the tenant cancelled their subscription...
-            // make sure the tenant is running (not offline or in backup or maintenance mode)
+            // maybe the tenant canceled their subscription...
+            // make sure the tenant is running (not off-line or in backup or maintenance mode)
 
             var tenantStatus = GetTenantStatus(tenant);
             if (tenantStatus.IsRunning)
@@ -142,11 +142,11 @@ namespace SuperOffice.WebApi.FullFrameworkSample
             return agent.GetTenantStatusAsync(tenant.ContextIdentifier, tenant.Environment.Current).Result;
         }
 
-        private string GetSystemUserTicket(SystemUserInfo systemUserInfo)
+        private async Task<string> GetSystemUserTicket(SystemUserInfo systemUserInfo)
         {
             var sysUserClient = new SystemUserClient(systemUserInfo);
 
-            var ticket = sysUserClient.GetSystemUserTicket();
+            var ticket = await sysUserClient.GetSystemUserTicketAsync();
             
             foreach (var claim in sysUserClient.ClaimsIdentity?.Claims)
             {
@@ -245,7 +245,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
                ApplicationContext.Application.ClientId,                   // client_id
                ApplicationContext.Application.ClientSecret,               // client_secret
                ApplicationContext.Application.RedirectUri.OriginalString, // redirect_uri
-               ApplicationContext.Tenant.Environment.Current              // online environment
+               ApplicationContext.Tenant.Environment.Current              // on-line environment
                 );
         }
     }

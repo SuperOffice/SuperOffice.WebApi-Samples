@@ -201,18 +201,18 @@ Given the required information, the `SystemUserClient` is able to generate and s
 
 ```C#
 var sysUserClient = new SystemUserClient(systemUserInfo);
-var sysUserJwt = sysUserClient.GetSystemUserJwt();
-var sysUserTkt = sysUserClient.GetSystemUserTicket();
+var sysUserJwt = sysUserClient.GetSystemUserJwtAsync();
+var sysUserTkt = sysUserClient.GetSystemUserTicketAsync();
 ```
 
-The **GetSystemUserJwt**, only returns the JWT, wrapped in a `SystemUserResult`. It does not validate or extract any claims. 
+The **GetSystemUserJwtAsync**, only returns the JWT, wrapped in a `SystemUserResult`. It does not validate or extract any claims. 
 
 There are two ways to perform validation. 
 
-1. Use the ValidateSystemUserResultMethod, and get back a `TokenValidationResult`. This method is responsible for populating SystemUserClient.ClaimsIdentity property. This method is used by the `GetSystemUserTicket` method.
+1. Use the ValidateSystemUserResultMethod, and get back a `TokenValidationResult`. This method is responsible for populating SystemUserClient.ClaimsIdentity property. This method is used by the `GetSystemUserTicketAsnyc` method.
 
 ```C#
-	var tokenValidationResult = sysUserClient.ValidateSystemUserResult(systemUserResult);
+	var tokenValidationResult = sysUserClient.ValidateSystemUserResultAsync(systemUserResult);
 ```
 
 2. Manually perform validation and extract claims, the `SystemUserClient` uses the `JwtTokenHandler`, located in the `SuperOffice.WebApi.IdentityModel` namespace.

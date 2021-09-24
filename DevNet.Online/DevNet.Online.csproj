@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SuperOffice.WebApi" Version="1.0.0-preview3" />
+    <PackageReference Include="SuperOffice.WebApi" Version="9.2.7935" />
   </ItemGroup>
 
 </Project>
