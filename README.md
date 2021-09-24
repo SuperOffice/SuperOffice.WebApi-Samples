@@ -201,18 +201,18 @@ Given the required information, the `SystemUserClient` is able to generate and s
 
 ```C#
 var sysUserClient = new SystemUserClient(systemUserInfo);
-var sysUserJwt = sysUserClient.GetSystemUserJwtAsync();
-var sysUserTkt = sysUserClient.GetSystemUserTicketAsync();
+var sysUserJwt = await sysUserClient.GetSystemUserJwtAsync();
+var sysUserTkt = await sysUserClient.GetSystemUserTicketAsync();
 ```
 
 The **GetSystemUserJwtAsync**, only returns the JWT, wrapped in a `SystemUserResult`. It does not validate or extract any claims. 
 
 There are two ways to perform validation. 
 
-1. Use the ValidateSystemUserResultMethod, and get back a `TokenValidationResult`. This method is responsible for populating SystemUserClient.ClaimsIdentity property. This method is used by the `GetSystemUserTicketAsnyc` method.
+1. Use the ValidateSystemUserResultMethod, and get back a `TokenValidationResult`. This method is responsible for populating SystemUserClient.ClaimsIdentity property. This method is used by the `GetSystemUserTicketAsync` method.
 
 ```C#
-	var tokenValidationResult = sysUserClient.ValidateSystemUserResultAsync(systemUserResult);
+	var tokenValidationResult = await sysUserClient.ValidateSystemUserResultAsync(systemUserResult);
 ```
 
 2. Manually perform validation and extract claims, the `SystemUserClient` uses the `JwtTokenHandler`, located in the `SuperOffice.WebApi.IdentityModel` namespace.
@@ -223,7 +223,7 @@ var handler = new SystemUserTokenHandler(
     OnlineEnvironment.SOD             // target online environment (SOD, Stage or Production)
     );
 
-var tokenValidationResult = handler.ValidateAsync(sysUserJwt.Token);
+var tokenValidationResult = await handler.ValidateAsync(sysUserJwt.Token);
 ```
 
 The method `SystemUserTokenHandler.ValidateAsync` returns a TokenValidationResult, a Microsoft datatype located in the [Microsoft.IdentityModel.JsonWebTokens](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.tokens.tokenvalidationresult) namespace, in the `Microsoft.IdentityModel.JsonWebTokens` assembly. 
