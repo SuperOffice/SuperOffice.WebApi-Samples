@@ -25,6 +25,12 @@ namespace WebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAntiforgery(options =>
+            {
+                // alway this site to be hosted in an iFrame.
+                options.SuppressXFrameOptionsHeader = true;
+            });
+
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddSuperOffice(options =>
