@@ -8,7 +8,7 @@ namespace DevNet.Online
 {
     public class SuperOfficeEnvironment
     {
-        private OnlineEnvironment _environment;
+        private string _environment;
         private string _tenantStatusUrl;
         private string _metadataEndpoint;
         private string _claimsIssuer;
@@ -21,7 +21,7 @@ namespace DevNet.Online
         public string MetaDataEndpoint => _metadataEndpoint;
         public string TenantStatusUrl => _tenantStatusUrl;
 
-        public OnlineEnvironment Current 
+        public string Current 
         {
             get
             {
@@ -35,9 +35,9 @@ namespace DevNet.Online
             }
         }
 
-        public SuperOfficeEnvironment(OnlineEnvironment environment)
+        public SuperOfficeEnvironment(string subdomain)
         {
-            _environment = environment;
+            _environment = subdomain;
             SetProperties();
         }
 
@@ -45,9 +45,9 @@ namespace DevNet.Online
         private void SetProperties()
         {
             var environment = GetEnvironment();
-            _authority = string.Format(Constants.OAuth.Authority, environment);
-            _claimsIssuer = string.Format(Constants.OAuth.ClaimsIssuer, environment);
-            _metadataEndpoint = string.Format(Constants.OAuth.MetadataEndpoint, environment);
+            _authority = string.Format(SuperOffice.SystemUser.Constants.OAuth.Authority, environment);
+            _claimsIssuer = string.Format(SuperOffice.SystemUser.Constants.OAuth.ClaimsIssuer, environment);
+            _metadataEndpoint = string.Format(SuperOffice.SystemUser.Constants.OAuth.MetadataEndpoint, environment);
             _tenantStatusUrl = string.Format(_tenantStatus, _metadataEndpoint);
         }
         
@@ -59,9 +59,9 @@ namespace DevNet.Online
         {
             return _environment switch
             {
-                OnlineEnvironment.SOD => "sod",
-                OnlineEnvironment.Stage => "qaonline",
-                OnlineEnvironment.Production => "online",
+                SubDomain.Development => "sod",
+                SubDomain.Stage => "qaonline",
+                SubDomain.Production => "online",
                 _ => throw new NotSupportedException("Environment property must be set to either Development, Stage or Production."),
             };
         }

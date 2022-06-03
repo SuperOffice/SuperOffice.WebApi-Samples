@@ -2,11 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SuperOffice.WebApi" Version="9.2.7935" />
+    <PackageReference Include="SuperOffice.WebApi" Version="10.1.3.669" />
+    <PackageReference Include="SuperOffice.WebApi.Authorization.AccessToken" Version="10.1.3.669" />
+    <PackageReference Include="SuperOffice.WebApi.Authorization.SystemUserTicket" Version="10.1.3.669" />
   </ItemGroup>
 
   <ItemGroup>

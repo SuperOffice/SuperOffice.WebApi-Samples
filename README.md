@@ -1,37 +1,32 @@
 # SuperOffice WebApi Samples
 
-The SuperOffice.WebApi nuget package is ready for preview. 
+The SuperOffice.WebApi nuget package contains the SuperOffice REST API client proxy agents. 
 
 https://www.nuget.org/packages/SuperOffice.WebApi
 
-`Install-Package SuperOffice.WebApi -Version 1.0.0-preview3`
+`Install-Package SuperOffice.WebApi`
 
-Please understand that this preview is still very young and untested in the wild. That's why we are sharing it with you! :-) Please take the time to give it a good test drive and provide your feedback.
-
-Feedback can either go to sdk@superoffice.com, subject: SuperOffice.WebApi Preview, or even better, [create an issue](https://github.com/SuperOffice/SuperOffice.WebApi-Samples/issues/new) on this repo!
+Feedback goes to sdk@superoffice.com, subject: SuperOffice.WebApi, or [create an issue](https://github.com/SuperOffice/SuperOffice.WebApi-Samples/issues/new) on this repo!
 
 ## About the samples
 
 The samples use a pre-registered application called **SuperOffice DevNet WebApi Sample**. It is already registered and has the following details:
 
-|Property            |Description                                              |
-|--------------------|---------------------------------------------------------|
-|Environment         |This application is  registed for __SOD__                |
-|ContextIdentifier   |The tenant identifier will be one of your tenants        |
-|SystemUserToken     |The SystemUser is issued at app approval on your tenant  |
-|ClientId            |857fd8fa9c83db5fa030b94d1bcc7b60                         |
-|ClientSecret        |ca452f9c29870bc278017796cd16bd11                         |
-|PrivateKey          |See the code sample Program.cs, line 206.                |
-
-To get a **system user token** and **access token**, sign-in using the�[DevNet-Tokens](https://devnet-tokens.azurewebsites.net/account/signin)�application using the provided client ID and secret in the table above. When redirected back the web site, your System User Token is displayed on the page.
-
-Copy and paste both the System User token and Access Token from the page into each of the sample program.cs files to successfully run the code.
+|Property            |Description                                                   |
+|--------------------|--------------------------------------------------------------|
+|Environment         |This application is  registed for __SOD__                     |
+|ContextIdentifier   |The tenant identifier will be your SOD tenants ID (Cust12345) |
+|ClientId            |857fd8fa9c83db5fa030b94d1bcc7b60 (for this sample)            |
+|ClientSecret        |ca452f9c29870bc278017796cd16bd11 (for this sample)            |
+|PrivateKey          |See the code sample Program.cs, line ca. ~200.                |
 
 ## About SuperOffice.WebApi
 
 First things first! **This is not an OAuth 2.0 client**. When authenticating with OpenID Connect or OAuth, you still have to use another means to obtain OAuth tokens. 
 
-For OAuth/OpenID Connect authentication in web applications, we recommend you take a look at [AspNet.Security.OAuth.SuperOffice](https://www.nuget.org/packages/AspNet.Security.OAuth.SuperOffice/) provider. It's an open source library created by DevNet, and tailored for SuperOffice online.
+For OAuth/OpenID Connect authentication in web applications, we recommend you take a look at 
+[AspNet.Security.OAuth.SuperOffice](https://www.nuget.org/packages/AspNet.Security.OAuth.SuperOffice/) provider. It's an open source library created by DevNet, 
+and tailored for SuperOffice online.
 
 Now lets begin looking how to use the SuperOffice.WebApi library.
 
@@ -39,22 +34,26 @@ Now lets begin looking how to use the SuperOffice.WebApi library.
 
 This library is a .NET Standard 2.0 library that works with both .NET Framework (4.6.1 and higher) and .NET Core (2.0 and higher) applications.
 
-Its purpose is to provide an alternative to the existing SuperOffice NetServer WCF proxies. **SuperOffice.WebApi** provides the exact same Agent-style services as [SuperOffice.NetServer.Services](https://www.nuget.org/packages/SuperOffice.NetServer.Services), while adopting modern practices, such as asynchronous methods. 
+Its purpose is to provide an alternative to the existing SuperOffice NetServer WCF proxies. **SuperOffice.WebApi** provides the exact same Agent-style services 
+as [SuperOffice.NetServer.Services](https://www.nuget.org/packages/SuperOffice.NetServer.Services), while adopting modern practices, such as asynchronous methods.
 
-This library makes it easier to work in a multi-tenant environment. It isolates a tenants' context in a **WebApiOptions** instance, where each instance is configured to target one specific tenant. Each instance can be configured with its own language, culture and timezone settings.
+This library makes it easier to work in a multi-tenant environment. It isolates a tenants' context in a **WebApiOptions** instance, where each instance is configured 
+to target one specific tenant. Each instance can be configured with its own language, culture and timezone settings. Each request is configurable to adjust the 
+culture and timezone settings, as well as pass in a CancellationToken.
 
-This library also has built-in **system user token** support. More on that below.
+This library does not contain built-in **system user token** support. More on that below.
 
 OK. So that's what the SuperOffice.WebApi library is, now lets see how to use it.
 
 ## How to use SuperOffice.WebApi
 
 1) Instantiate a WebApiOptions instance.
+
   * The primary constructor accepts the target web api URL, i.e. https://sod.superoffice.com/cust12345/api.
 	
 	`WebApiOptions(string baseUrl);`
 			
-	WebApiOptions inherits from RequestOptions, which contain the internationalization settings. 	These settings can also be passes into the overloaded contructor.
+	WebApiOptions inherits from RequestOptions, which contain the internationalization settings. These settings can also be passes into the overloaded contructor.
 	
     ```C#
 	WebApiOptions(
@@ -68,17 +67,16 @@ OK. So that's what the SuperOffice.WebApi library is, now lets see how to use it
 
 2) Define the IAuthorization credential type.
 	
-	The IAuthorization parameter is used to define the credential type, and used to set the Authorization attribute in each HTTP request. 
+	The IAuthorization parameter is used to define the credential type that sets the Authorization header in each HTTP request. 
 
-    There are 4 built-in IAuthorization implementations.
+	SuperOffice.WebApi depends on the SuperOffice.WebApi.Authorization package, which contains three default Authorization types. 
+	See `About IAuthorization` for more information about Authorization extensibility in the next section.
 
 	|Authorization Type           | Used in Online | Used in Onsite |
 	|-----------------------------|:--------------:|:--------------:|
-	|AuthorizationAccessToken     |X               |                |
-	|AuthorizationSystemUserTicket|X               |                |
 	|AuthorizationTicket          |                | X              |
 	|AuthorizationUsernamePassword|                | X              |
-    |AuthorizationUserToken       |                | X              |
+    |AuthorizationImplicit        |                | X              |
 
 	Assign an instance to the `WebApiOptions.Authorization` property.
     
@@ -109,13 +107,23 @@ OK. So that's what the SuperOffice.WebApi library is, now lets see how to use it
 
 ## About IAuthorization
 
-There are cases where a users credentials will expire. It's probably easiest to say that the only case where credentials will not expire at runtime is using AuthorizationUsernamePassword. All other IAuthorization implementations contain time-sensitive credentials.
+The IAuthorization interface is used to define the credential type that sets the Authorization header in each HTTP request. It is an interface anyone can implement and assign to 
+the WebApiOptions.Authorization property to populate and optionally refresh the Authorization header value for all http requests.
 
-The SuperOffice WebApi library has limited built-in support to automatically refresh credentials.
+There are cases where a users credentials will expire. It's probably easiest to say that the only case where credentials will not expire at runtime is using AuthorizationUsernamePassword. 
+All other IAuthorization implementations contain time-sensitive credentials.
+
+The SuperOffice WebApi Authorization library is extended by other packages with built-in support to automatically refresh credentials.
+
+| Package name                                    |Authorization Type           | Used in Online | Used in Onsite |
+|:------------------------------------------------|-----------------------------|:--------------:|:--------------:|
+|SuperOffice.WebApi.Authorization.AccessToken     |AuthorizationAccessToken     |X               |                |
+|SuperOffice.WebApi.Authorization.SystemUserTicket|AuthorizationSystemUserTicket|X               |                |
+|SuperOffice.WebApi (only built-in Authorization) |AuthorizationUserToken       |                | X              |
 	
 Both `AuthorizationTicket` and `AuthorizationSystemUserTicket` credentials expire after 6 hours but only the `AuthorizationSystemUserTicket` implementation has automatic refresh support.
 
-To auto-refresh `AuthorizationSystemUserTicket`�requires the following information:
+To auto-refresh `AuthorizationSystemUserTicket` requires the following information:
 
 * Environment
 * ContextIdentifier
@@ -123,26 +131,28 @@ To auto-refresh `AuthorizationSystemUserTicket`�requires the following informa
 * PrivateKey
 * SystemUserToken
 
-To auto-refresh `AuthorizationAccessToken`�requires the following information:
+To auto-refresh `AuthorizationAccessToken` requires the following information:
 
 * Access Token
 * Refresh Token
 * Redirect URI
 
-To auto-refresh `AuthorizationUserToken`�requires the following information:
+To auto-refresh `AuthorizationUserToken` requires the following information:
 
 * Username
 * Password
 
-The system user flow is discussed more in the System User section below.
+The system user flow is discussed more in the [System User Client repository](https://github.com/SuperOffice/SuperOffice.SystemUser.Client).
 	
 ### When is IAuthorization refreshed
 
 This library takes a reactive approach and waits to receive an access denied response prior to attempting to refresh the Authorization.
 
-When an access denied response is received, the client looks to make sure the WebApiOptions has an `IAuthorization.RefreshAuthorization` implementation. When present, and the RefreshAuthorization implementation succeeds, `RefreshAuthorization` returns an updated `IAuthorization`.
+When an access denied response is received, the client looks to make sure the WebApiOptions has an `IAuthorization.RefreshAuthorization` implementation. 
+When present, and the RefreshAuthorization implementation succeeds, `RefreshAuthorization` returns an updated `IAuthorization`.
 
-With an updated Authorization, the client then invokes the `IAuthorization.GetAuthorization` method to get a two-value tuple, the scheme and the parameter, and uses those to set the Authorization header.
+With an updated Authorization, the client then invokes the `IAuthorization.GetAuthorization` method to get a two-value tuple, the scheme and the parameter, 
+and uses those to set the Authorization header.
 
 `("Bearer", "8A:Cust12345:ABCdefg....XyZ")`
 
@@ -150,7 +160,8 @@ Finally, the client retries that original request with an updated scheme and par
 
 ### Certificate Validation
 
-Both `AuthorizationAccessToken` and `AuthorizationSystemUserTicket` validate the response from SuperOffice using the SuperOffice public key. The client does this by requesting the OAuth 2.0 metadata document from the online environment. This process takes two requests:
+Both `AuthorizationAccessToken` and `AuthorizationSystemUserTicket` validate the response from SuperOffice using the SuperOffice public key. 
+The client does this by requesting the OAuth 2.0 metadata document from the online environment. This process takes two requests:
 
 1) The first request is sent to obtain the OAuth 2.0 metadata document, and then extracts the jwks_uri.
 2) The second request is sent to the jwks_uri to obtain the certificate details.
@@ -159,13 +170,13 @@ The benefit of this process is that the integration does not need to include any
 
 ### Custom IAuthorization implementation
 
-If for some unknown reason you want to populate the Authorization header with a differnt scheme/parameter values, you can implement your own IAuthorization. The interface is simple. 
+When you want to populate the Authorization header with a differnt scheme/parameter values, you can implement your own IAuthorization. The interface is simple. 
 
 ```C#
 public interface IAuthorization
 {
     Func<ReAuthorizationArgs, IAuthorization> RefreshAuthorization { get; set; }
-    (string scheme, string parameter) GetAuthorization();
+    AuthenticationHeaderValue GetAuthorization();
 }
 ```
 
@@ -175,73 +186,14 @@ The client updates the `WebApiOptions` and then calls the **GetAuthorization** m
 
 ## System User
 
-This library supports the System User flow. The client makes it very easy to call the online PartnerSystemUserService endpoint, validate the JWT and return the claims it contains.
-
-The JWT contains a lot of information, however, it's usually just the Ticket credential that is interesting. Therefore, **SuperOffice.WebApi** simplifies calling the service, validating the response, and then returning the ticket in a single method call.
-
-> :warning: Do **not** ask for a System User Ticket every single time you invoke an Agent method! This creates a new credentials record in the database each and every time. **Take advantage of the 6 hour window** and only ask for a new Ticket when absolutely necessary!
-
-### How to use System User flow
-
-Use the SystemUserClient class, located in the `SuperOffice.WebApi.IdentityModel` namespace.
-
-The constructor accepts a `SystemUserInfo` instance, and contains all of the information required to submit a request to the _partnersystemuserservice.svc_ endpoint.
-
-#### SystemUserInfo Properties
-
-|Property            |Description                                        |
-|--------------------|---------------------------------------------------|
-|Environment         |The online environment (SOD, Stage, Production.    |
-|ContextIdentifier   |The tenant, or customer, identity.                 |
-|ClientSecret        |The application secret, a.k.a. client_secret.      |
-|PrivateKey          |The applications RSAXML private certificate value. |
-|SystemUserToken     |The SystemUser token, issued during app approval.  |
-
-Given the required information, the `SystemUserClient` is able to generate and send a request to the service, then receive and validate the response.
-
-```C#
-var sysUserClient = new SystemUserClient(systemUserInfo);
-var sysUserJwt = await sysUserClient.GetSystemUserJwtAsync();
-var sysUserTkt = await sysUserClient.GetSystemUserTicketAsync();
-```
-
-The **GetSystemUserJwtAsync**, only returns the JWT, wrapped in a `SystemUserResult`. It does not validate or extract any claims. 
-
-There are two ways to perform validation. 
-
-1. Use the ValidateSystemUserResultMethod, and get back a `TokenValidationResult`. This method is responsible for populating SystemUserClient.ClaimsIdentity property. This method is used by the `GetSystemUserTicketAsync` method.
-
-```C#
-	var tokenValidationResult = await sysUserClient.ValidateSystemUserResultAsync(systemUserResult);
-```
-
-2. Manually perform validation and extract claims, the `SystemUserClient` uses the `JwtTokenHandler`, located in the `SuperOffice.WebApi.IdentityModel` namespace.
-
-```C#
-var handler = new SystemUserTokenHandler(
-    new System.Net.Http.HttpClient(), // HttpClient instance.
-    OnlineEnvironment.SOD             // target online environment (SOD, Stage or Production)
-    );
-
-var tokenValidationResult = await handler.ValidateAsync(sysUserJwt.Token);
-```
-
-The method `SystemUserTokenHandler.ValidateAsync` returns a TokenValidationResult, a Microsoft datatype located in the [Microsoft.IdentityModel.JsonWebTokens](https://docs.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.tokens.tokenvalidationresult) namespace, in the `Microsoft.IdentityModel.JsonWebTokens` assembly. 
+This functionality has moved into the [SuperOffice.WebApi.Authorization.SystemUserTicket](https://www.nuget.org/packages/SuperOffice.WebApi.Authorization.SystemUserTicket) package, which depends on the 
+[SuperOffice.SystemUser.Client](https://www.nuget.org/packages/SuperOffice.SystemUser.Client) package.
 
 ## Package Dependencies
 
-These will automatically be included when you add the SuperOffice.WebApi package to a project.
-
-.NETStandard 2.0
-
-* Microsoft.Extensions.Logging.Abstractions (>= 5.0.0)
-* Microsoft.IdentityModel.JsonWebTokens (>= 5.6.0)
-* Microsoft.IdentityModel.Logging (>= 5.6.0)
-* Microsoft.IdentityModel.Tokens (>= 5.6.0)
-* Newtonsoft.Json (>= 12.0.2)
-* System.Security.Permissions (>= 4.7.0)
+See the [nuget package page](https://www.nuget.org/packages/SuperOffice.WebApi).
 
 ## Known Issues
 
-The current SuperOffice.WebApi package dependencies are not the latest Microsoft packages available. Therefore, if your project uses newer versions of the Microsoft packages, there will be conflicts with TokenValidationResult.
+None.
 

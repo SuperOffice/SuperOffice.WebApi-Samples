@@ -17,10 +17,11 @@
 // Enter Install-Package SuperOffice.WebApi -Version 1.0.0-preview                      //
 // ************************************************************************************ //
 using DevNet.Online;
+using SuperOffice.SystemUser;
 using SuperOffice.WebApi;
 using SuperOffice.WebApi.Agents;
+using SuperOffice.WebApi.Authorization;
 using SuperOffice.WebApi.Data;
-using SuperOffice.WebApi.IdentityModel;
 using System;
 using System.Threading.Tasks;
 
@@ -41,18 +42,18 @@ namespace SuperOffice.WebApi.FullFrameworkSample
             // 2. System User Token, get this by approving the app...
             // 3. OAuth access_token
 
-            // Use https://devnet-tokens.azurewebsites.net/account/signin
+            // Use https://devnet-tools.superoffice.com/account/signin
             // to get an access_token for this call...(dev environment)
             // the redirectUri is already wired up for this client_id.
 
             _appContext = GetAppContext(
-                // tenant context identifier
                 "Cust12345",
-                // system user token
-                "SuperOffice DevNet WebApi Sample-Update_Me",
-                // access token
-                "8A:Cust12345.AY...bT9"
+                "Your_SystemUser_Token",
+                "8A:Cust12345.ASI...1hketXTZwUB"
                 );
+
+            // this is needed when using AuthorizationAccessToken (used below to get PersonEntity)
+            _appContext.ApplicationUser.AuthTokens.RefreshToken = "mAva...SjzcXQ";
         }
 
         static async System.Threading.Tasks.Task Main(string[] args)
@@ -96,8 +97,11 @@ namespace SuperOffice.WebApi.FullFrameworkSample
                 //config.CultureCode = "en";
                 //config.TimeZone = "UTC";
 
+                var source = new System.Threading.CancellationTokenSource();
                 var contactAgent = new ContactAgent(config);
-                return await contactAgent.GetContactEntityAsync(contactId);
+                RequestOptions options = new RequestOptions(source.Token);
+
+                return await contactAgent.GetContactEntityAsync(contactId, options);
             }
 
             return null;
@@ -162,7 +166,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
         {
             return new SystemUserInfo()
             {
-                Environment = ApplicationContext.Tenant.Environment.Current,
+                SubDomain = ApplicationContext.Tenant.Environment.Current,
                 ContextIdentifier = ApplicationContext.Tenant.ContextIdentifier,
                 ClientSecret = ApplicationContext.Application.ClientSecret,
                 PrivateKey = ApplicationContext.Application.PrivateKey,
@@ -172,10 +176,16 @@ namespace SuperOffice.WebApi.FullFrameworkSample
 
         private AuthorizationAccessToken GetAccessTokenAuthorization()
         {
-            return new AuthorizationAccessToken(
+
+            var accessToken = new AuthorizationAccessToken(
                 ApplicationContext.ApplicationUser.AuthTokens.AccessToken,
-                ApplicationContext.Tenant.Environment.Current
-                );
+                ApplicationContext.ApplicationUser.AuthTokens.RefreshToken, 
+                ApplicationContext.Application.ClientId, 
+                ApplicationContext.Application.ClientSecret, 
+                ApplicationContext.Application.RedirectUri.OriginalString, 
+                ApplicationContext.Tenant.Environment.Current);
+
+            return accessToken;
         }
 
         private ApplicationContext GetAppContext(string contextIdentifer, string systemUserToken, string accessToken)
@@ -198,7 +208,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
                     }
                 },
 
-                Tenant = new Tenant(contextIdentifer, new SuperOfficeEnvironment(OnlineEnvironment.SOD))
+                Tenant = new Tenant(contextIdentifer, new SuperOfficeEnvironment(SubDomain.Development))
                 {
                     ApplicationAuthorization = new ApplicationAuthorization()
                     {
@@ -240,7 +250,6 @@ namespace SuperOffice.WebApi.FullFrameworkSample
         {
             return new AuthorizationAccessToken(
                ApplicationContext.ApplicationUser.AuthTokens.AccessToken, // access_token
-               ApplicationContext.ApplicationUser.AuthTokens.IdToken,     // id_token
                ApplicationContext.ApplicationUser.AuthTokens.RefreshToken,// refresh_token
                ApplicationContext.Application.ClientId,                   // client_id
                ApplicationContext.Application.ClientSecret,               // client_secret

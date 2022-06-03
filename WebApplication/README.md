@@ -3,6 +3,8 @@
 This application demonstrates use the following nuget packages:
 
 * [SuperOffice.WebApi](https://www.nuget.org/packages/SuperOffice.WebApi)
+* [SuperOffice.WebApi.Authorization](https://www.nuget.org/packages/SuperOffice.WebApi.Authorization)
+* [SuperOffice.WebApi.Authorization.AccessToken](https://www.nuget.org/packages/SuperOffice.WebApi.Authorization.AccessToken)
 * [AspNet.Security.OAuth.SuperOffice](https://www.nuget.org/packages/AspNet.Security.OAuth.SuperOffice)
 
 ## How to run application

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Options;
 using SuperOffice.WebApi;
 using SuperOffice.WebApi.Agents;
+using SuperOffice.WebApi.Authorization;
 using SuperOffice.WebApi.Data;
 using T = System.Threading.Tasks;
 
@@ -42,9 +43,8 @@ namespace WebApplication.Pages.DataAccess
                     var callbackUri = $"{this.Request.Scheme}://{this.Request.Host}{clientSettings.CallbackPath}";
 
                     var authorization = new AuthorizationAccessToken(
-                    authenticationInfo.Properties.GetTokenValue(Constants.OAuth.AccessToken),
-                    authenticationInfo.Properties.GetTokenValue(Constants.OAuth.IdToken),
-                    authenticationInfo.Properties.GetTokenValue(Constants.OAuth.RefreshToken),
+                    authenticationInfo.Properties.GetTokenValue("access_token"),
+                    authenticationInfo.Properties.GetTokenValue("refresh_token"),
                     clientSettings.ClientId,
                     clientSettings.ClientSecret,
                     callbackUri,
@@ -59,16 +59,16 @@ namespace WebApplication.Pages.DataAccess
             }
         }
 
-        private OnlineEnvironment GetEnvironment(SuperOfficeAuthenticationEnvironment environment)
+        private string GetEnvironment(SuperOfficeAuthenticationEnvironment environment)
         {
             switch (environment)
             {
                 case SuperOfficeAuthenticationEnvironment.Development:
-                    return OnlineEnvironment.SOD;
+                    return SubDomain.Development;
                 case SuperOfficeAuthenticationEnvironment.Stage:
-                    return OnlineEnvironment.Stage;
+                    return SubDomain.Stage;
                 case SuperOfficeAuthenticationEnvironment.Production:
-                    return OnlineEnvironment.Production;
+                    return SubDomain.Production;
                 default:
                     throw new Exception("Should not get here...");
             };
