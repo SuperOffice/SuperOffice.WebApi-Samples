@@ -40,7 +40,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
 
             // 1. Tenant ID, i.e. Cust12345, 
             // 2. System User Token, get this by approving the app...
-            // 3. OAuth access_token
+            // 3. OAuth access_token and refresh token
 
             // Use https://devnet-tools.superoffice.com/account/signin
             // to get an access_token for this call...(dev environment)
@@ -53,7 +53,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
                 );
 
             // this is needed when using AuthorizationAccessToken (used below to get PersonEntity)
-            _appContext.ApplicationUser.AuthTokens.RefreshToken = "mAva...SjzcXQ";
+            _appContext.ApplicationUser.AuthTokens.RefreshToken = "lQhtK...rydb4SM";
         }
 
         static async System.Threading.Tasks.Task Main(string[] args)

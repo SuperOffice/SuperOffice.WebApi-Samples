@@ -6,9 +6,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SuperOffice.WebApi" Version="10.1.3.669" />
-    <PackageReference Include="SuperOffice.WebApi.Authorization.AccessToken" Version="10.1.3.669" />
-    <PackageReference Include="SuperOffice.WebApi.Authorization.SystemUserTicket" Version="10.1.3.669" />
+    <PackageReference Include="SuperOffice.WebApi" Version="10.1.4.104" />
+    <PackageReference Include="SuperOffice.WebApi.Authorization.AccessToken" Version="10.1.4.104" />
+    <PackageReference Include="SuperOffice.WebApi.Authorization.SystemUserTicket" Version="10.1.4.104" />
   </ItemGroup>
 
   <ItemGroup>

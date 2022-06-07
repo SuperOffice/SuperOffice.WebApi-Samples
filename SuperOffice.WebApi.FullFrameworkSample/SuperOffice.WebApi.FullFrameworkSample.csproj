@@ -80,16 +80,16 @@
       <HintPath>..\packages\SuperOffice.SystemUser.Client.1.0.1\lib\netstandard2.0\SuperOffice.SystemUser.Client.dll</HintPath>
     </Reference>
     <Reference Include="SuperOffice.WebApi, Version=10.1.0.0, Culture=neutral, PublicKeyToken=bdda2d694ae22a86, processorArchitecture=MSIL">
-      <HintPath>..\packages\SuperOffice.WebApi.10.1.3.669\lib\netstandard2.0\SuperOffice.WebApi.dll</HintPath>
+      <HintPath>..\packages\SuperOffice.WebApi.10.1.4.104\lib\netstandard2.0\SuperOffice.WebApi.dll</HintPath>
     </Reference>
     <Reference Include="SuperOffice.WebApi.Authorization, Version=10.1.0.0, Culture=neutral, PublicKeyToken=bdda2d694ae22a86, processorArchitecture=MSIL">
-      <HintPath>..\packages\SuperOffice.WebApi.Authorization.10.1.3.669\lib\netstandard2.0\SuperOffice.WebApi.Authorization.dll</HintPath>
+      <HintPath>..\packages\SuperOffice.WebApi.Authorization.10.1.4.104\lib\netstandard2.0\SuperOffice.WebApi.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="SuperOffice.WebApi.Authorization.AccessToken, Version=0.0.0.0, Culture=neutral, PublicKeyToken=bdda2d694ae22a86, processorArchitecture=MSIL">
-      <HintPath>..\packages\SuperOffice.WebApi.Authorization.AccessToken.10.1.3.669\lib\netstandard2.0\SuperOffice.WebApi.Authorization.AccessToken.dll</HintPath>
+      <HintPath>..\packages\SuperOffice.WebApi.Authorization.AccessToken.10.1.4.104\lib\netstandard2.0\SuperOffice.WebApi.Authorization.AccessToken.dll</HintPath>
     </Reference>
     <Reference Include="SuperOffice.WebApi.Authorization.SystemUserTicket, Version=10.1.0.0, Culture=neutral, PublicKeyToken=bdda2d694ae22a86, processorArchitecture=MSIL">
-      <HintPath>..\packages\SuperOffice.WebApi.Authorization.SystemUserTicket.10.1.3.669\lib\netstandard2.0\SuperOffice.WebApi.Authorization.SystemUserTicket.dll</HintPath>
+      <HintPath>..\packages\SuperOffice.WebApi.Authorization.SystemUserTicket.10.1.4.104\lib\netstandard2.0\SuperOffice.WebApi.Authorization.SystemUserTicket.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">

@@ -40,7 +40,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
 
             // 1. Tenant ID, i.e. Cust12345, 
             // 2. System User Token, get this by approving the app...
-            // 3. OAuth access_token
+            // 3. OAuth access_token and refresh token
 
             // Use https://devnet-tools.superoffice.com/account/signin
             // to get an access_token for this call...(dev environment)
@@ -53,7 +53,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
                 );
 
             // this is needed when using AuthorizationAccessToken (used below to get PersonEntity)
-            _appContext.ApplicationUser.AuthTokens.RefreshToken = "mAva...SjzcXQ";
+            _appContext.ApplicationUser.AuthTokens.RefreshToken = "5Fc3...WtpF";
         }
 
         static async System.Threading.Tasks.Task Main(string[] args)
@@ -97,11 +97,9 @@ namespace SuperOffice.WebApi.FullFrameworkSample
                 //config.CultureCode = "en";
                 //config.TimeZone = "UTC";
 
-                var source = new System.Threading.CancellationTokenSource();
                 var contactAgent = new ContactAgent(config);
-                RequestOptions options = new RequestOptions(source.Token);
 
-                return await contactAgent.GetContactEntityAsync(contactId, options);
+                return await contactAgent.GetContactEntityAsync(contactId);
             }
 
             return null;
@@ -143,7 +141,8 @@ namespace SuperOffice.WebApi.FullFrameworkSample
             // no authorization necessary for getting tenant status...
 
             var agent = new ApiAgent(session);
-            return agent.GetTenantStatusAsync(tenant.ContextIdentifier, tenant.Environment.Current).Result;
+            var tenantStatus = agent.GetTenantStatusAsync(tenant.ContextIdentifier, tenant.Environment.Current).Result;
+            return tenantStatus;
         }
 
         private async Task<string> GetSystemUserTicket(SystemUserInfo systemUserInfo)

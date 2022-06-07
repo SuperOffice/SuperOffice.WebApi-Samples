@@ -45,9 +45,9 @@ namespace DevNet.Online
         private void SetProperties()
         {
             var environment = GetEnvironment();
-            _authority = string.Format(SuperOffice.SystemUser.Constants.OAuth.Authority, environment);
-            _claimsIssuer = string.Format(SuperOffice.SystemUser.Constants.OAuth.ClaimsIssuer, environment);
-            _metadataEndpoint = string.Format(SuperOffice.SystemUser.Constants.OAuth.MetadataEndpoint, environment);
+            _authority = string.Format("https://{0}.superoffice.com/login", environment);
+            _claimsIssuer = string.Format("https://{0}.superoffice.com", environment);
+            _metadataEndpoint = string.Format("https://{0}.superoffice.com/login/.well-known/openid-configuration", environment);
             _tenantStatusUrl = string.Format(_tenantStatus, _metadataEndpoint);
         }
         
