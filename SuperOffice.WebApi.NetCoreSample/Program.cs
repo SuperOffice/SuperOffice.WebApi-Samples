@@ -47,10 +47,10 @@ namespace SuperOffice.WebApi.FullFrameworkSample
             // the redirectUri is already wired up for this client_id.
 
             _appContext = GetAppContext(
-                "Cust12345",
-                "Your_SystemUser_Token",
-                "8A:Cust12345.ASI...1hketXTZwUB"
-                );
+               "Cust12345",
+               "Your_SystemUser_Token",
+               "8A:Cust12345.ASI...1hketXTZwUB"
+               );
 
             // this is needed when using AuthorizationAccessToken (used below to get PersonEntity)
             _appContext.ApplicationUser.AuthTokens.RefreshToken = "5Fc3...WtpF";
@@ -90,7 +90,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
                 var sysUserInfo = GetSystemUserInfo();
                 var sysUserTicket = await GetSystemUserTicket(sysUserInfo);
 
-                var config = new WebApiOptions(tenant.WebApiUrl);
+                var config = new WebApiOptions(tenantStatus.Api);
                 config.Authorization = new AuthorizationSystemUserTicket(sysUserInfo, sysUserTicket);
 
                 //config.LanguageCode = "en";
@@ -113,7 +113,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
             var tenantStatus = GetTenantStatus(tenant);
             if (tenantStatus.IsRunning)
             {
-                var config = new WebApiOptions(tenant.WebApiUrl);
+                var config = new WebApiOptions(tenantStatus.Api);
                 config.Authorization = GetAccessTokenAuthorization();
 
 
@@ -126,21 +126,17 @@ namespace SuperOffice.WebApi.FullFrameworkSample
 
         private async Task<StringDictionary> GetSystemInfo(Tenant tenant)
         {
-            WebApiOptions session = new WebApiOptions(tenant.WebApiUrl);
+            // no webapioptions or authorization necessary for getting system info...
 
-            // no authorization necessary for getting system info...
-
-            var agent = new ApiAgent(session);
+            var agent = new ApiAgent();
             return await agent.GetApiVersionAsync();
         }
 
         private TenantStatus GetTenantStatus(Tenant tenant)
         {
-            WebApiOptions session = new WebApiOptions(tenant.WebApiUrl);
+            // no webapi options or authorization necessary for getting tenant status...
 
-            // no authorization necessary for getting tenant status...
-
-            var agent = new ApiAgent(session);
+            var agent = new ApiAgent();
             var tenantStatus = agent.GetTenantStatusAsync(tenant.ContextIdentifier, tenant.Environment.Current).Result;
             return tenantStatus;
         }

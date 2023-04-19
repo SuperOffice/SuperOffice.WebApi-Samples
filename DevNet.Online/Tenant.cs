@@ -12,8 +12,6 @@ namespace DevNet.Online
 
         public SuperOfficeEnvironment Environment { get; set; }
 
-        public string WebApiUrl => $"{Environment.ClaimsIssuer}/{ContextIdentifier}/api/";
-
         public Tenant(string contextIdentifer, SuperOfficeEnvironment environment)
         {
             ContextIdentifier = contextIdentifer;
