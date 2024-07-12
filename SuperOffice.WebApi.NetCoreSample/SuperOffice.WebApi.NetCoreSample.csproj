@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SuperOffice.WebApi" Version="10.1.4.104" />
-    <PackageReference Include="SuperOffice.WebApi.Authorization.AccessToken" Version="10.1.4.104" />
-    <PackageReference Include="SuperOffice.WebApi.Authorization.SystemUserTicket" Version="10.1.4.104" />
+    <PackageReference Include="SuperOffice.SystemUser.Client" Version="1.0.4" />
+    <PackageReference Include="SuperOffice.WebApi" Version="10.3.6.552" />
+    <PackageReference Include="SuperOffice.WebApi.Authorization.AccessToken" Version="10.3.6.552" />
+    <PackageReference Include="SuperOffice.WebApi.Authorization.SystemUserTicket" Version="10.3.6.552" />
   </ItemGroup>
 
   <ItemGroup>

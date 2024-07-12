@@ -1,15 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNet.Security.OAuth.SuperOffice" Version="6.0.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.5" />
-    <PackageReference Include="SuperOffice.WebApi" Version="10.1.4.104" />
-    <PackageReference Include="SuperOffice.WebApi.Authorization.AccessToken" Version="10.1.4.104" />
+    <PackageReference Include="AspNet.Security.OAuth.SuperOffice" Version="8.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.7" />
+    <PackageReference Include="SuperOffice.WebApi" Version="10.3.6.552" />
+    <PackageReference Include="SuperOffice.WebApi.Authorization.AccessToken" Version="10.3.6.552" />
+    <PackageReference Include="SuperOffice.WebApi.Authorization.SystemUserTicket" Version="10.3.6.552" />
   </ItemGroup>
 
 </Project>
