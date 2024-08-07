@@ -61,7 +61,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
             Program p = new Program();
 
             var tenantStatus = p.GetTenantStatus(p.ApplicationContext.Tenant);
-            var apiSysemInfo = await p.GetSystemInfo(p.ApplicationContext.Tenant);
+            var apiSysemInfo = await p.GetSystemInfo(tenantStatus, p.ApplicationContext.Tenant);
 
             foreach (var item in apiSysemInfo)
             {
@@ -124,11 +124,10 @@ namespace SuperOffice.WebApi.FullFrameworkSample
             return null;
         }
 
-        private async Task<StringDictionary> GetSystemInfo(Tenant tenant)
+        private async Task<StringDictionary> GetSystemInfo(TenantStatus status, Tenant tenant)
         {
-            // no webapioptions or authorization necessary for getting system info...
-
-            var agent = new ApiAgent();
+            WebApiOptions options = new WebApiOptions(status.Api);
+            var agent = new ApiAgent(options);
             return await agent.GetApiVersionAsync();
         }
 
