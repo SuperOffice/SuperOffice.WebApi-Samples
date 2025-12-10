@@ -216,21 +216,21 @@ namespace SuperOffice.WebApi.FullFrameworkSample
         {
             return new Application()
             {
-                ClientId = "857fd8fa9c83db5fa030b94d1bcc7b60",
-                ClientSecret = "ca452f9c29870bc278017796cd16bd11",
+                ClientId = "857fd8***EXAMPLE***1bcc7b60",
+                ClientSecret = "ca452f9c***Example***96cd16bd11",
                 ID = 1,
                 Name = "SuperOffice DevNet WebApi Sample",
                 PrivateKey = @"<RSAKeyValue>
-  <Modulus>zEQhXPTH7SjXutGIaO1JvebvkxmFd3xnPKZexgsx+SiYLUyOUNQG5u4rgF3ZuH4iGZdSfn9f9A3512/J+K2QRKPVA+0GZb25y2o0QEcFt7HP9GOkmwVLJfP2yUitCi1+U8qKOfpPbPPST1v5PTiwbrGQd+CLtl7ScvrKyOsA4S0=</Modulus>
+  <Modulus>zEQhXPTH7SjXutGIaO1JvebvkxmFd3xnPKZexgsx***Example***F3ZuH4iGZdSfn9f9A3512/***Example***0GZb25y2o0QEcFt7HP9GOkmwVLJfP2yUitCi1+***Example***PTiwbrGQd+CLtl7ScvrKyOsA4S0=</Modulus>
   <Exponent>AQAB</Exponent>
-  <P>3bzCzoZ289lErJ9S2fr3LA+OlvoDk3uPzVQ/STB8zUUvKqcA2wUzNDq8dTxWXOf7Y+QZu8srUfaft+FkbPUt5w==</P>
-  <Q>69RDNwIN2lyVE1GFOeqYfXKvodUqGQYxSNdPcIdqL1dEDfxt34eaMz0uRKXTuvT47cC3CJrmXf0fQJqh7SFNyw==</Q>
-  <DP>HFDLi7YOIKuhIm4iFWYABGdkLRF2PXIs9eqJPl5rwYbRNCApcs6iMExD3rC60phpOONbCeky+f+Fe+TTfzp8Bw==</DP>
-  <DQ>pvzok1zq/kIsdT92POp3C+1XnBpa8tlFsLR1VdMtR1RdpiGmk29rqviZeJaLdIjec0vQz1EP6mG/7XkRS94XPQ==</DQ>
-  <InverseQ>ZsQXkH8AF7vM42LS1vObpSIMScPU/u2J209QD7PviQmH02H3UWVqHO9HRS+MRKRWk264B6J0Zioub1r2oxjGjg==</InverseQ>
-  <D>AWV11OzXcQeWcfB8vjrhBitN9/N0thxjmEaK30+0R7+/So/7aRIJ+gomwfniQyCZmxMtvS+huElgK9jXyJtnIQ3c6R9r/N2mSUCgtVWkIqHr5hLk4pp4xfe+K+hORK9Q2/gjW8BT1ENhWs7A2aCf0XZWZg4LM9T+MLzTTQEwmQE=</D>
+  <P>3bzCzoZ289***Example***STB8zUUvKqcA2wUzNDq8dTxWXOf7Y+QZu8srUfaft+FkbPUt5w==</P>
+  <Q>69RDNwIN2l***Example***QYxSNdPcIdqL1dEDfxt34eaMz0uRKXTuvT47cC3CJrmXf0fQJqh7SFNyw==</Q>
+  <DP>HFDLi7YOI***Example***dkLRF2PXIs9eqJPl5rwYbRNCApcs6iMExD3rC60phpOONbCeky+f+Fe+TTfzp8Bw==</DP>
+  <DQ>pvzok1zq/***Example***1XnBpa8tlFsLR1VdMtR1RdpiGmk29rqviZeJaLdIjec0vQz1EP6mG/7XkRS94XPQ==</DQ>
+  <InverseQ>Zsa***Example***1vObpSIMScPU/u2J209QD7PviQmH02H3UWVqHO9HRS+MRKRWk264B6J0Zioub1r2oxjGjg==</InverseQ>
+  <D>AWV11OzXcQ***Example***N9/N0thxjmEaK30+0R7+/So/7aRIJ+gomwfniQyCZmxMtvS+huElgK9jXyJtnIQ3c6R9r/N2mSUCgtVWkIqHr5hLk4pp4xfe+K+hORK9Q2/gjW8BT1ENhWs7A2aCf0XZWZg4LM9T+MLzTTQEwmQE=</D>
 </RSAKeyValue>",
-                RedirectUri = new Uri("https://devnet-tokens.azurewebsites.net/openid/callback")
+                RedirectUri = new Uri("https://devnet-tools.superoffice.com/openid/callback")
             };
         }
 

@@ -8,9 +8,9 @@
   <ItemGroup>
     <PackageReference Include="AspNet.Security.OAuth.SuperOffice" Version="8.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.7" />
-    <PackageReference Include="SuperOffice.WebApi" Version="10.3.6.552" />
-    <PackageReference Include="SuperOffice.WebApi.Authorization.AccessToken" Version="10.3.6.552" />
-    <PackageReference Include="SuperOffice.WebApi.Authorization.SystemUserTicket" Version="10.3.6.552" />
+    <PackageReference Include="SuperOffice.WebApi" Version="11.7.727" />
+    <PackageReference Include="SuperOffice.WebApi.Authorization.AccessToken" Version="11.7.727" />
+    <PackageReference Include="SuperOffice.WebApi.Authorization.SystemUserTicket" Version="11.7.727" />
   </ItemGroup>
 
 </Project>

@@ -7,6 +7,18 @@ This application demonstrates use the following nuget packages:
 * [SuperOffice.WebApi.Authorization.AccessToken](https://www.nuget.org/packages/SuperOffice.WebApi.Authorization.AccessToken)
 * [AspNet.Security.OAuth.SuperOffice](https://www.nuget.org/packages/AspNet.Security.OAuth.SuperOffice)
 
+## Prerequisites
+
+Know the SuperOffice Online development environment.
+
+- A SuperOffice Online developer account
+    - Registered at https://dev.superoffice.com/register
+- A valid SuperOffice API client ID and secret 
+    - Created at https://dev.superoffice.com/applications/list
+
+Find out more about
+[SuperOffice Online Development](https://docs.superoffice.com/en/api/)
+
 ## How to run application
 
 1) **Start the application** in Visual Studio, Visual Studio Code or dotnet run
