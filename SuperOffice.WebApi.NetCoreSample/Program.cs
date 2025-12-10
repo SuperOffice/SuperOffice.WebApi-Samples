@@ -60,7 +60,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
         {
             Program p = new Program();
 
-            var tenantStatus = p.GetTenantStatus(p.ApplicationContext.Tenant);
+            var tenantStatus = await p.GetTenantStatus(p.ApplicationContext.Tenant);
             var apiSysemInfo = await p.GetSystemInfo(p.ApplicationContext.Tenant, tenantStatus);
 
             foreach (var item in apiSysemInfo)
@@ -84,7 +84,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
             // maybe the tenant canceled their subscription...
             // make sure the tenant is running (not off-line or in backup or maintenance mode)
 
-            var tenantStatus = GetTenantStatus(tenant);
+            var tenantStatus = await GetTenantStatus(tenant);
             if (tenantStatus.IsRunning)
             {
                 var sysUserInfo = GetSystemUserInfo();
@@ -110,7 +110,7 @@ namespace SuperOffice.WebApi.FullFrameworkSample
             // maybe the tenant canceled their subscription...
             // make sure the tenant is running (not off-line or in backup or maintenance mode)
 
-            var tenantStatus = GetTenantStatus(tenant);
+            var tenantStatus = await GetTenantStatus(tenant);
             if (tenantStatus.IsRunning)
             {
                 var config = new WebApiOptions(tenantStatus.Api);
@@ -131,13 +131,12 @@ namespace SuperOffice.WebApi.FullFrameworkSample
             return await agent.GetApiVersionAsync();
         }
 
-        private TenantStatus GetTenantStatus(Tenant tenant)
+        private Task<TenantStatus> GetTenantStatus(Tenant tenant)
         {
             // no webapi options or authorization necessary for getting tenant status...
 
             var agent = new ApiAgent();
-            var tenantStatus = agent.GetTenantStatusAsync(tenant.ContextIdentifier, tenant.Environment.Current).Result;
-            return tenantStatus;
+            return agent.GetTenantStatusAsync(tenant.ContextIdentifier, tenant.Environment.Current);
         }
 
         private async Task<string> GetSystemUserTicket(SystemUserInfo systemUserInfo)
@@ -171,15 +170,13 @@ namespace SuperOffice.WebApi.FullFrameworkSample
         private AuthorizationAccessToken GetAccessTokenAuthorization()
         {
 
-            var accessToken = new AuthorizationAccessToken(
+            return new AuthorizationAccessToken(
                 ApplicationContext.ApplicationUser.AuthTokens.AccessToken,
                 ApplicationContext.ApplicationUser.AuthTokens.RefreshToken, 
                 ApplicationContext.Application.ClientId, 
                 ApplicationContext.Application.ClientSecret, 
                 ApplicationContext.Application.RedirectUri.OriginalString, 
                 ApplicationContext.Tenant.Environment.Current);
-
-            return accessToken;
         }
 
         private ApplicationContext GetAppContext(string contextIdentifer, string systemUserToken, string accessToken)
